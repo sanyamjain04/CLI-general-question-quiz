@@ -1,60 +1,73 @@
-var readlineSync = require('readline-sync');
+const readlineSync = require('readline-sync');
+const chalk = require('chalk');
+const log = console.log;
+const correct = chalk.bgGreenBright.black;
+const wrong = chalk.bgRed.black;
+const skip = chalk.bgCyanBright.black;
 
-var userName = readlineSync.question("What's your name ? : ");
+const userName = readlineSync.question("What's your name ? : ");
 
-console.log("Welcome " + userName);
-console.log("Welcome to the Quiz, This Quiz contains some common question about our Country India. Let's Play! ");
-console.log("please enter all your answers in lowercase")
+log(chalk.bold.bgRedBright.green(" Welcome " + userName + " "));
+log("Welcome to the Quiz, This Quiz contains some common question about General Knowledge. Let's Play! ");
 
 
-var score = 0;
 
-function play(question, answer) {
-  var userAnswer = readlineSync.question(question);
+let score = 0;
+
+const play = (question, answer, options) => {
+  const userAnswer = readlineSync.keyInSelect(options, question);;
 
   if (userAnswer === answer) {
-    console.log('You are Right!');
+    log(correct(' You are Right! '));
     score++;
-  } else {
-    console.log('You are Wrong!');
-
+  } else if (userAnswer == -1) {
+    log(skip(" You Skip this Question "))
   }
-  console.log("Your Current score = " + score);
-  console.log('----------')
+  else {
+    log(wrong(' You are Wrong! '));
+  }
+  log("Your Current score = " + score);
+  log('----------')
 
 }
 
 
-var questions = [
+const questions = [
   {
-    question: "Which city is the capital city of India? ",
-    answer: "new delhi"
+    question: "What country has the highest life expectancy? ",
+    options: ["Hong kong", "Norway", "Germany", "Sweden"],
+    answer: 0
   },
   {
-    question: "Which city is known as pink city of India? ",
-    answer: "jaipur"
+    question: "How many elements are in the periodic table? ",
+    options: [93, 115, 118, 153],
+    answer: 2
   },
   {
-    question: "Which city is know as financial capital of India? ",
-    answer: "mumbai"
+    question: "What phone company produced the 3310?  ",
+    options: ["nokia", "Blackberry", "lenevo", "Micromax"],
+    answer: 0
   },
   {
-    question: " What is the capital of Uttar Pradesh? ",
-    answer: "lucknow"
+    question: "What planet is closest to the sun?  ",
+    options: ["Pluto", "Mars", "Venus", "Mercury"],
+
+    answer: 3
   },
   {
-    question: " What is the capital of Bihar? ",
-    answer: "patna"
+    question: "What is the only flag that does not have four sides?",
+    options: ["Venezuela", "Bhutan", "Nepal", "North Korea"],
+    answer: 2
   },
 ]
 
 
-
-for (var i = 0; i < questions.length; i++) {
-  var currentQuestion = questions[i];
-  play(currentQuestion.question, currentQuestion.answer);
-
-
+for (let i = 0; i < questions.length; i++) {
+  const currentQuestion = questions[i];
+  play(currentQuestion.question, currentQuestion.answer, currentQuestion.options);
 }
 
-console.log('congratulation you completed the quiz. Your score is = ' + score);
+
+log(chalk.bold.bgGrey(' Congratulation you completed the Quiz. Your score is = ' + score + " "));
+
+log("--- Quiz End ---");
